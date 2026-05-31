@@ -50,14 +50,14 @@ class ActorCritic:
         self.R_tot = 0
 
     def reset(self):
-        self.state = th.from_numpy(self.env.reset()).float()
+        self.state = th.from_numpy(self.env.reset()[0]).float()
 
     def evaluate(self, render=False):
 
         total_return = 0
 
         for _ in range(self.num_evaluation_episodes):
-            state = th.from_numpy(self.env.reset()).float()
+            state = th.from_numpy(self.env.reset()[0]).float()
             episode_return = 0
 
             for _ in range(self.max_evaluation_episode_length):
@@ -66,7 +66,7 @@ class ActorCritic:
 
                 if render:
                     self.env.render()
-                state, reward, terminal, _ = self.env.step(action)
+                state, reward, terminal, _, _ = self.env.step(action)
                 state = th.from_numpy(state).float()
 
                 episode_return += reward
@@ -89,7 +89,7 @@ class ActorCritic:
                 action = self.pretraining_policy.sample()
             else:
                 action = self.policy.get_action(state)
-            next_state, reward, terminal, _ = self.env.step(action.numpy())
+            next_state, reward, terminal, _, _ = self.env.step(action.numpy())
             next_state = th.from_numpy(next_state).float()
             reward = th.Tensor([reward])
             terminal = th.Tensor([terminal])
@@ -109,7 +109,7 @@ class ActorCritic:
 
         state = self.state
         action = self.policy.get_action(state)
-        next_state, reward, terminal, _ = self.env.step(action.numpy())
+        next_state, reward, terminal, _, _ = self.env.step(action.numpy())
         next_state = th.from_numpy(next_state).float()
         reward = th.Tensor([reward])
         terminal = th.Tensor([terminal])

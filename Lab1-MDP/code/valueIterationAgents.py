@@ -69,7 +69,8 @@ class ValueIterationAgent(ValueEstimationAgent):
                 bestAction = self.computeActionFromValues(state)
                 if bestAction is not None:
                     newValues[state] = self.computeQValueFromValues(state, bestAction)
-            self.values = newValues
+            for state in self.mdp.getStates():
+                self.values[state] = newValues[state]
     def getValue(self, state):
         """
           Return the value of the state (computed in __init__).

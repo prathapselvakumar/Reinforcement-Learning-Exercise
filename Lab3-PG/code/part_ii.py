@@ -9,13 +9,13 @@ import matplotlib.pyplot as plt
 import csv
 
 # Initialise Environment
-env = gym.make("Pendulum-v0").unwrapped
+env = gym.make("Pendulum-v1").unwrapped
 max_action = env.action_space.high[0]
 min_action = env.action_space.low[0]
 state_dim = int(env.observation_space.shape[0])
 action_dim = int(env.action_space.shape[0])
 training_mode = 'Score' # Options: 'Score' trains the policy using the score function and 'Reparam' trains using the reparametrisation trick.
-number_of_trials = 5
+number_of_trials = 1
 save_data = True
 render_agent = False
 
@@ -103,7 +103,7 @@ if __name__ == "__main__":
     training_steps = np.linspace(0, num_epochs * num_training_updates_per_epoch, num=num_epochs+1)
     plt.plot(training_steps, mean_returns)
     plt.fill_between(training_steps, mean_returns + std_returns, mean_returns - std_returns, alpha=0.3)
-    plt.show()
+    plt.savefig("lab3_output.png")
 
     if save_data:
         write_to_file(mean_returns.tolist(), std_returns.tolist())
