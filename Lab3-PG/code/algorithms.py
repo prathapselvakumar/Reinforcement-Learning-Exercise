@@ -156,7 +156,8 @@ class ActorCritic:
         """
         Policy (Actor) Losses: TO COMPLETE IN EXERCISE II.2b
         """
-        # policy_loss =
+        advantage = new_q_values - values
+        policy_loss = -(log_pis * (advantage - log_pis).detach()).mean()
 
         """
         Gradient Updates
@@ -170,7 +171,7 @@ class ActorCritic:
         self.vf_optimiser.step()
 
         self.policy_optimiser.zero_grad()
-        # policy_loss.backward()
+        policy_loss.backward()
         self.policy_optimiser.step()
 
         self.soft_update()
